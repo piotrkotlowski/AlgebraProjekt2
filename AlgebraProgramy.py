@@ -3,36 +3,55 @@ import random
 random.seed(13)
 
 def main():
-    #ZAD 7
+    #ZAD 6
     vector1 = [1, 0, 0, 2, 4]
     vector2 = [0, 1, 0, 1, 0]
     vector3 = [0, 0, 1, 5, 6]
     listofvector = [vector1, vector2, vector3]
-    wyn = linear(listofvector,7)
-    wyn_with_cords=linearwithcords(listofvector,7)
-    #print(len(wyn))
-    #printowanie(wyn_with_cords)
-    vector=[1,2,3,4,5]
-    #print(MinimizeHammingDistance(wyn,1,vector,wyn_with_cords))
+    linearcombinations= linear(listofvector,7)
+    #ToPrint(linearcombinations)
+    linearcombinations_with_cords=linearwithcords(listofvector,7)
+
+
+    #ZAD 7.
+    #Losowo wybrany wektor
+    vector = [1, 2, 3, 4, 5]
+    #Wyświetlenia wyniku
+    #print(MinimizeHammingDistance(linearcombinations,vector,linearcombinations_with_cords))
 
 
     #ZAD 8
+    #Generowanie macierzy
+    #a)
     a=generateMatrix()
-    #print(a)
+    #b)
+    aDivided = divideMatrix(a)
+    #Ekstraktowanie wektorów z wygenrowanej macierzy
+    #d)
     extreactedVecot=extractingVectors(a)
-    #print(divideMatrix(a))
+    #Macierzy przykształcona w celu zrobienia Image
+
+    #Macierz G z polecenia
     Gmatrix=[[1, 0 ,0 ,0 ,0, 4, 4, 2, 0, 1, 1],[0, 1, 0 ,0, 0, 3 ,0, 2, 2,1 ,0],[0, 0, 1, 0 ,0, 2 ,0, 1, 1, 1, 1],[0, 0, 0, 1 ,1, 0 ,0, 0, 4, 3, 0]]
+
+    #Wymnożenie wyekstraktowanych wektorów z macierzą G
     b=MatrixMulti(Gmatrix,extreactedVecot)
-    #print(b)
+    #ToPrintVectors(b)
+    #Symulacja wysyłania do kolegi zakodowanych wektorów
+    #e)
     b_sendedtoFRiend=SendingToFriend(b)
-    wyn8=linear(Gmatrix,5)
-    wyn8_with_cords=linearwithcords(Gmatrix,5)
-    #print(b_sendedtoFRiend)
-    sendedtofriendanduncoded=MinimizeHammingDistancevectors(wyn8,1,b_sendedtoFRiend,wyn8_with_cords)
-    #print(sendedtofriendanduncoded)
-    print(divideMatrix(Transpose(sendedtofriendanduncoded)))
-
-
+    #ToPrintVectors(b_sendedtoFRiend)
+    #Genrowanie przestrzeni
+    linearcombinationsEight=linear(Gmatrix,5)
+    linearcombinationsEight_with_cords=linearwithcords(Gmatrix,5)
+    #f)
+    #Wykonanie algorytmu MinimizeHammingDiscatence
+    sendedtofriendanduncoded=MinimizeHammingDistancevectors(linearcombinationsEight,b_sendedtoFRiend,linearcombinationsEight_with_cords)
+    #g)
+    result=Transpose(sendedtofriendanduncoded)
+    #Wyświetlanie wyniku
+    #h)
+    #print(divideMatrix(Transpose(sendedtofriendanduncoded)))
 
 def linear(listofvectors,Z):
     scalar=[0]*len(listofvectors)
@@ -47,11 +66,8 @@ def linear(listofvectors,Z):
             for i in range(len(scalar)):
                 Sum+=(scalar[i]*listofvectors[i][j] )
             newvecetor[j]=Sum%7
-        for m in range(len(result)):
-            if result[m]==newvecetor:
-                DoNotAdd=True
-        if DoNotAdd==False:
-            result.append(newvecetor)
+
+        result.append(newvecetor)
         scalar[len(scalar)-1]+=1
         for i in range(len(scalar)-2,-1,-1):
             if scalar[i+1]==Z:
@@ -73,13 +89,9 @@ def linearwithcords(listofvectors,Z):
             for i in range(len(scalar)):
                 Sum+=(scalar[i]*listofvectors[i][j] )
             newvecetor[j]=Sum%7
-        for m in range(len(result)):
-            if result[m]==newvecetor:
-                DoNotAdd=True
-        if DoNotAdd==False:
-            result.append(newvecetor)
-            scalartoget=copy.deepcopy(scalar)
-            result.append(["WSPOŁRZEDNE:",scalartoget])
+        result.append(newvecetor)
+        scalartoget=copy.deepcopy(scalar)
+        result.append(["WSPOŁRZEDNE:",scalartoget])
 
         scalar[len(scalar)-1]+=1
         for i in range(len(scalar)-2,-1,-1):
@@ -99,7 +111,7 @@ def Hammingdistance(vector1,vector2):
         if vector1[i]!=vector2[i]:
             counter+=1
     return counter
-def MinimizeHammingDistancevectors(C,B,v,listofvectors_with_cords):
+def MinimizeHammingDistancevectors(C,v,listofvectors_with_cords):
     result=[]
     for k in range(len(v)):
         min = float("+inf")
@@ -115,7 +127,7 @@ def MinimizeHammingDistancevectors(C,B,v,listofvectors_with_cords):
         #print(vectoroutput)
         result.append(checkcords(vectoroutput, listofvectors_with_cords)[1])
     return result
-def MinimizeHammingDistance(C,B,v,listofvectors_with_cords):
+def MinimizeHammingDistance(C,v,listofvectors_with_cords):
     min=float("+inf")
     listofmin=[]
     for i in range(len(C)):
@@ -126,7 +138,6 @@ def MinimizeHammingDistance(C,B,v,listofvectors_with_cords):
                 listofmin.append(C[k])
     randomvariable=random.randint(0,len(listofmin)-1)
     vectoroutput=listofmin[randomvariable]
-    #print(vectoroutput)
     return checkcords(vectoroutput,listofvectors_with_cords)
 def Transpose(matrix):
     result=[]
@@ -143,13 +154,11 @@ def Transpose(matrix):
 
 def generateMatrix():
     matrix=[[random.randint(0,4) for i in range(10)] for k in range(4)]
-    #print(matrix)
     return matrix
 def divideMatrix(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
             matrix[i][j]=matrix[i][j]/4
-    #print(matrix)
     return matrix
 def MatrixMulti(matrix,v):
     result=[]
@@ -178,7 +187,17 @@ def SendingToFriend(listoofcodedvectors):
                 randomvariable=0
             codedvectors[k][i]= (codedvectors[k][i]+randomvariable) % 5
     return codedvectors
-
-
+def ToPrint(matrix):
+    for i in range(len(matrix)):
+        if i%8==0 and i!=0:
+            print(matrix[i],end="\n")
+        else:
+            print(matrix[i],end=" ")
+def ToPrintVectors(matrix):
+    for i in range(len(matrix)):
+        if i%3==0:
+            print(matrix[i],end="\n")
+        else:
+            print(matrix[i],end=" ")
 if __name__ == '__main__':
     main()
