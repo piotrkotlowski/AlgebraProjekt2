@@ -25,10 +25,11 @@ def main():
     #a)
     a=generateMatrix()
     #b)
-    aDivided = divideMatrix(a)
+    #aDivided = divideMatrix(copy.deepcopy(a))
     #Ekstraktowanie wektorów z wygenrowanej macierzy
     #d)
     extreactedVecot=extractingVectors(a)
+    #ToPrintVectors(extreactedVecot)
     #Macierzy przykształcona w celu zrobienia Image
 
     #Macierz G z polecenia
